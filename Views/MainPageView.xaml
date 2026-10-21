@@ -45,7 +45,7 @@
 
                 <!-- Brand & Logo -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-                    <Image Source="Assets/StoreLogo.png" Width="26" Height="26"/>
+                    <Image Source="ms-appx:///Assets/StoreLogo.png" Width="26" Height="26"/>
                     <TextBlock Text="DubStage" FontSize="16" FontWeight="Bold" Foreground="#F0F2F5" VerticalAlignment="Center"/>
                     <Border Background="#21242C" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
                         <TextBlock Text="STUDIO" FontSize="10" FontWeight="Bold" Foreground="#4F80FF"/>

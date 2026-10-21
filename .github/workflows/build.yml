@@ -88,6 +88,10 @@ jobs:
           Write-Host "SHA-256 Checksum: $hash"
           "$hash  $($msixFiles[0].Name)" | Out-File -FilePath "./AppPackages/SHA256SUMS.txt" -Encoding utf8
           Copy-Item -Path "DubStageTestCert.cer" -Destination "./AppPackages/"
+          $installScript = Get-ChildItem -Path ./AppPackages/ -Filter "Install.ps1" -Recurse | Select-Object -First 1
+          if ($installScript) {
+            Copy-Item -Path $installScript.FullName -Destination "./AppPackages/Install.ps1"
+          }
 
       - name: Upload MSIX Workflow Artifact
         uses: actions/upload-artifact@v4

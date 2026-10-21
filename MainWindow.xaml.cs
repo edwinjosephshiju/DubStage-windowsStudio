@@ -26,21 +26,20 @@ public sealed partial class MainWindow : Window
 
             if (appWindow != null)
             {
-                // Desktop DAW standard resolution: 1400x900
-                appWindow.Resize(new SizeInt32(1400, 900));
+                appWindow.Title = "DubStage - AI Audio Dubbing & ADR Studio";
 
-                // Center window on primary monitor
                 var displayArea = DisplayArea.GetFromWindowId(windowId, DisplayAreaFallback.Primary);
                 if (displayArea != null)
                 {
                     var workArea = displayArea.WorkArea;
-                    int x = (workArea.Width - 1400) / 2;
-                    int y = (workArea.Height - 900) / 2;
-                    appWindow.Move(new PointInt32(Math.Max(0, x), Math.Max(0, y)));
-                }
+                    int targetW = Math.Min(1400, Math.Max(800, workArea.Width - 60));
+                    int targetH = Math.Min(900, Math.Max(500, workArea.Height - 60));
+                    appWindow.Resize(new SizeInt32(targetW, targetH));
 
-                // Set title
-                appWindow.Title = "DubStage - AI Audio Dubbing & ADR Studio";
+                    int x = Math.Max(0, (workArea.Width - targetW) / 2);
+                    int y = Math.Max(0, (workArea.Height - targetH) / 2);
+                    appWindow.Move(new PointInt32(x, y));
+                }
             }
         }
         catch (Exception ex)
