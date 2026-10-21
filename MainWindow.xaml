@@ -5,24 +5,23 @@
     xmlns:views="using:DubStage.Views"
     Title="DubStage - Audio Dubbing &amp; ADR Studio">
 
-    <!-- Keyboard Accelerators for Windows DAW Navigation -->
-    <Window.KeyboardAccelerators>
-        <KeyboardAccelerator Key="Space" Modifiers="None" Invoked="OnSpaceAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="R" Modifiers="None" Invoked="OnRecordAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="Up" Modifiers="None" Invoked="OnUpAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="Down" Modifiers="None" Invoked="OnDownAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="Left" Modifiers="None" Invoked="OnLeftAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="Right" Modifiers="None" Invoked="OnRightAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="O" Modifiers="Control" Invoked="OnOpenAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="E" Modifiers="Control" Invoked="OnExportAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="S" Modifiers="Control" Invoked="OnSaveAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="M" Modifiers="Control" Invoked="OnMuteAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="Delete" Modifiers="None" Invoked="OnDeleteAcceleratorInvoked"/>
-        <KeyboardAccelerator Key="Number1" Modifiers="None" Invoked="OnTab1AcceleratorInvoked"/>
-        <KeyboardAccelerator Key="Number2" Modifiers="None" Invoked="OnTab2AcceleratorInvoked"/>
-    </Window.KeyboardAccelerators>
-
     <Grid Background="#0D0E11">
+        <!-- Keyboard Accelerators for Windows DAW Navigation -->
+        <Grid.KeyboardAccelerators>
+            <KeyboardAccelerator Key="Space" Modifiers="None" Invoked="OnSpaceAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="R" Modifiers="None" Invoked="OnRecordAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="Up" Modifiers="None" Invoked="OnUpAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="Down" Modifiers="None" Invoked="OnDownAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="Left" Modifiers="None" Invoked="OnLeftAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="Right" Modifiers="None" Invoked="OnRightAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="O" Modifiers="Control" Invoked="OnOpenAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="E" Modifiers="Control" Invoked="OnExportAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="S" Modifiers="Control" Invoked="OnSaveAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="M" Modifiers="Control" Invoked="OnMuteAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="Delete" Modifiers="None" Invoked="OnDeleteAcceleratorInvoked"/>
+            <KeyboardAccelerator Key="Number1" Modifiers="None" Invoked="OnTab1AcceleratorInvoked"/>
+            <KeyboardAccelerator Key="Number2" Modifiers="None" Invoked="OnTab2AcceleratorInvoked"/>
+        </Grid.KeyboardAccelerators>
         <Grid.RowDefinitions>
             <!-- Custom Title Bar -->
             <RowDefinition Height="Auto"/>

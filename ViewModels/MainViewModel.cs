@@ -171,8 +171,15 @@ public class MainViewModel : INotifyPropertyChanged
             if (SetProperty(ref _playheadMs, value))
             {
                 OnPropertyChanged(nameof(TimecodeDisplay));
+                OnPropertyChanged(nameof(PlayheadMsDouble));
             }
         }
+    }
+
+    public double PlayheadMsDouble
+    {
+        get => _playheadMs;
+        set => PlayheadMs = (long)value;
     }
 
     public string TimecodeDisplay
@@ -292,7 +299,19 @@ public class MainViewModel : INotifyPropertyChanged
     public float VadSensitivity
     {
         get => _vadSensitivity;
-        set => SetProperty(ref _vadSensitivity, value);
+        set
+        {
+            if (SetProperty(ref _vadSensitivity, value))
+            {
+                OnPropertyChanged(nameof(VadSensitivityDouble));
+            }
+        }
+    }
+
+    public double VadSensitivityDouble
+    {
+        get => _vadSensitivity;
+        set => VadSensitivity = (float)value;
     }
 
     private float[] _vocalPeaks = Array.Empty<float>();

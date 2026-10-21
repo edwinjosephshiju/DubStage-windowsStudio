@@ -6,6 +6,7 @@ public class ProjectEntity
     public string Title { get; set; } = "Untitled Studio Project";
     public string VideoPath { get; set; } = string.Empty;
     public long VideoDurationMs { get; set; } = 0;
+    public double VideoDurationMsDouble => VideoDurationMs > 0 ? (double)VideoDurationMs : 1000.0;
     public int VideoWidth { get; set; } = 1920;
     public int VideoHeight { get; set; } = 1080;
     public int SampleRate { get; set; } = 44100;

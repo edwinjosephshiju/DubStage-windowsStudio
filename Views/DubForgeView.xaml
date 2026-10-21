@@ -39,7 +39,7 @@
                                 <FontIcon Glyph="{x:Bind ViewModel.IsPlaying, Mode=OneWay, Converter={StaticResource PlayPauseIconConverter}}" FontSize="14" Foreground="#F0F2F5"/>
                             </Button>
 
-                            <Slider Grid.Column="1" Minimum="0" Maximum="{x:Bind ViewModel.ActiveProject.VideoDurationMs, Mode=OneWay, FallbackValue=1000}" Value="{x:Bind ViewModel.PlayheadMs, Mode=TwoWay}" VerticalAlignment="Center"/>
+                            <Slider Grid.Column="1" Minimum="0" Maximum="{x:Bind ViewModel.ActiveProject.VideoDurationMsDouble, Mode=OneWay, FallbackValue=1000}" Value="{x:Bind ViewModel.PlayheadMsDouble, Mode=TwoWay}" VerticalAlignment="Center"/>
 
                             <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.TimecodeDisplay, Mode=OneWay}" VerticalAlignment="Center" FontFamily="Consolas" FontSize="13" Foreground="#00E5A3"/>
                         </Grid>
@@ -64,7 +64,7 @@
                             <Button Grid.Column="2" Content="Sideload .onnx" Click="OnSideloadModelClick" Background="#21242C" Foreground="#F0F2F5" CornerRadius="6"/>
                         </Grid>
 
-                        <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsSeparating, Mode=OneWay}" Value="{x:Bind ViewModel.SeparationProgress.Percent, Mode=OneWay, FallbackValue=0}" Foreground="#4F80FF" Background="#21242C" Height="6" CornerRadius="3"/>
+                        <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsSeparating, Mode=OneWay}" Value="{x:Bind ViewModel.SeparationProgress.PercentDouble, Mode=OneWay, FallbackValue=0}" Foreground="#4F80FF" Background="#21242C" Height="6" CornerRadius="3"/>
                         <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" FontSize="12" Foreground="#9AA0A6"/>
                     </StackPanel>
                 </Border>
@@ -87,7 +87,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="VAD Sensitivity:" FontSize="12" Foreground="#9AA0A6" VerticalAlignment="Center"/>
-                            <Slider Grid.Column="1" Minimum="0.1" Maximum="0.95" StepFrequency="0.05" Value="{x:Bind ViewModel.VadSensitivity, Mode=TwoWay}" VerticalAlignment="Center"/>
+                            <Slider Grid.Column="1" Minimum="0.1" Maximum="0.95" StepFrequency="0.05" Value="{x:Bind ViewModel.VadSensitivityDouble, Mode=TwoWay}" VerticalAlignment="Center"/>
                             <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.VadSensitivity, Mode=OneWay}" FontSize="12" Foreground="#00E5A3" VerticalAlignment="Center" FontFamily="Consolas"/>
                         </Grid>
                     </StackPanel>

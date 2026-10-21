@@ -53,5 +53,12 @@ public abstract record ModelStatus
     public record Error(DemucsModelPreset Preset, string ErrorMessage) : ModelStatus;
 }
 
-public record SeparationProgress(string Stage, int Percent, long CurrentFrame, long TotalFrames);
-public record ExportProgress(string Stage, int Percent, long CurrentSample, long TotalSamples);
+public record SeparationProgress(string Stage, int Percent, long CurrentFrame, long TotalFrames)
+{
+    public double PercentDouble => Percent;
+}
+
+public record ExportProgress(string Stage, int Percent, long CurrentSample, long TotalSamples)
+{
+    public double PercentDouble => Percent;
+}

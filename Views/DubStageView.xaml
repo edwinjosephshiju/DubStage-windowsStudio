@@ -126,7 +126,7 @@
                             <ColumnDefinition Width="40"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Take Gain:" FontSize="11" Foreground="#9AA0A6" VerticalAlignment="Center"/>
-                        <Slider Grid.Column="1" Minimum="-12" Maximum="12" StepFrequency="0.5" Value="{x:Bind ViewModel.ActiveTake.GainDb, Mode=TwoWay, FallbackValue=0}" VerticalAlignment="Center"/>
+                        <Slider Grid.Column="1" Minimum="-12" Maximum="12" StepFrequency="0.5" Value="{x:Bind ViewModel.ActiveTake.GainDbDouble, Mode=TwoWay, FallbackValue=0}" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.ActiveTake.GainDb, Mode=OneWay, FallbackValue=0}" FontSize="11" Foreground="#00E5A3" VerticalAlignment="Center" FontFamily="Consolas"/>
                     </Grid>
 
@@ -138,7 +138,7 @@
                             <ColumnDefinition Width="40"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Nudge (Sync):" FontSize="11" Foreground="#9AA0A6" VerticalAlignment="Center"/>
-                        <Slider Grid.Column="1" Minimum="-500" Maximum="500" StepFrequency="10" Value="{x:Bind ViewModel.ActiveTake.TimeOffsetMs, Mode=TwoWay, FallbackValue=0}" VerticalAlignment="Center"/>
+                        <Slider Grid.Column="1" Minimum="-500" Maximum="500" StepFrequency="10" Value="{x:Bind ViewModel.ActiveTake.TimeOffsetMsDouble, Mode=TwoWay, FallbackValue=0}" VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.ActiveTake.TimeOffsetMs, Mode=OneWay, FallbackValue=0}" FontSize="11" Foreground="#4F80FF" VerticalAlignment="Center" FontFamily="Consolas"/>
                     </Grid>
 
@@ -152,7 +152,7 @@
                 <!-- Export Master Panel -->
                 <StackPanel Grid.Column="2" Spacing="8" VerticalAlignment="Center">
                     <Button Content="EXPORT MASTER (Ctrl+E)" Click="OnExportMasterClick" Background="#4F80FF" Foreground="White" FontWeight="Bold" FontSize="13" Padding="20,14" CornerRadius="8"/>
-                    <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsExporting, Mode=OneWay}" Value="{x:Bind ViewModel.ExportProgress.Percent, Mode=OneWay, FallbackValue=0}" Foreground="#00E5A3" Background="#21242C" Height="4" CornerRadius="2"/>
+                    <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsExporting, Mode=OneWay}" Value="{x:Bind ViewModel.ExportProgress.PercentDouble, Mode=OneWay, FallbackValue=0}" Foreground="#00E5A3" Background="#21242C" Height="4" CornerRadius="2"/>
                 </StackPanel>
             </Grid>
         </Border>
