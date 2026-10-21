@@ -5,10 +5,9 @@ from pathlib import Path
 
 block_cipher = None
 
-# Collect Assets and App Manifest
+# Collect Assets
 datas = [
-    ('Assets', 'Assets'),
-    ('app.manifest', '.')
+    ('Assets', 'Assets')
 ]
 
 # If ffmpeg and ffprobe exist locally, include them
@@ -69,7 +68,7 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     manifest='app.manifest',
-    icon='Assets/StoreLogo.png',
+    icon=None,
 )
 
 coll = COLLECT(

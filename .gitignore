@@ -27,7 +27,6 @@ venv/
 ENV/
 
 # PyInstaller / Build outputs
-*.manifest
 *.spec.bak
 msix_layout/
 AppPackages/
