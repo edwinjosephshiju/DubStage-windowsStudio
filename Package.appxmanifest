@@ -51,11 +51,11 @@
   </Applications>
 
   <Capabilities>
+    <!-- Internet access for downloading neural ONNX separation models -->
+    <Capability Name="internetClient" />
     <!-- Desktop full trust capability required for low-latency native audio and ONNX inference -->
     <rescap:Capability Name="runFullTrust" />
     <!-- Hardware microphone access for vocal ADR capture -->
     <DeviceCapability Name="microphone" />
-    <!-- Internet access for downloading neural ONNX separation models -->
-    <Capability Name="internetClient" />
   </Capabilities>
 </Package>
