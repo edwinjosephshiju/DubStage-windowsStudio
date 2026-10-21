@@ -45,7 +45,10 @@ jobs:
           # Import into LocalMachine Root & TrustedPeople for build runner trust
           Import-Certificate -FilePath "DubStageTestCert.cer" -CertStoreLocation "Cert:\LocalMachine\Root"
           Import-Certificate -FilePath "DubStageTestCert.cer" -CertStoreLocation "Cert:\LocalMachine\TrustedPeople"
-          Write-Host "Certificate generated and installed into trust store."
+          
+          # Pass thumbprint to environment for MSBuild signing
+          "CERT_THUMBPRINT=$($cert.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Host "Certificate generated with Thumbprint: $($cert.Thumbprint)"
 
       - name: Restore NuGet Dependencies
         shell: pwsh
@@ -55,16 +58,13 @@ jobs:
       - name: Build and Package MSIX
         shell: pwsh
         run: |
-          $pfxPath = (Get-Item "DubStageTestCert.pfx").FullName
           msbuild DubStage.csproj `
-            /restore `
             /p:Configuration=Release `
             /p:Platform=x64 `
             /p:RuntimeIdentifier=win-x64 `
             /p:GenerateAppxPackageOnBuild=true `
             /p:AppxPackageSigningEnabled=true `
-            /p:PackageCertificateKeyFile="$pfxPath" `
-            /p:PackageCertificatePassword="DubStage123!" `
+            /p:PackageCertificateThumbprint="${{ env.CERT_THUMBPRINT }}" `
             /p:AppxPackageDir="./AppPackages/" `
             /p:AppxBundle=Never `
             /p:WindowsAppSDKSelfContained=true `

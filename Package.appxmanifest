@@ -29,8 +29,8 @@
 
   <Applications>
     <Application Id="App"
-      Executable="$targetnametarget$"
-      EntryPoint="$targetentrypoint$">
+      Executable="DubStage.exe"
+      EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements
         DisplayName="DubStage"
         Description="Professional AI-Powered Video Dubbing, Stem Separation, and Automated Dialogue Recording (ADR) Studio for Windows"
