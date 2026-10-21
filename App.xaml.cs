@@ -10,15 +10,6 @@ public partial class App : Application
 
     public App()
     {
-        InitializeComponent();
-
-        UnhandledException += (sender, e) =>
-        {
-            LogCrash("App.UnhandledException", e.Exception);
-            // Mark handled if possible so Windows doesn't immediately fail-fast if recoverable
-            e.Handled = true;
-        };
-
         AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
         {
             if (e.ExceptionObject is Exception ex)
@@ -31,6 +22,23 @@ public partial class App : Application
         {
             LogCrash("TaskScheduler.UnobservedTaskException", e.Exception);
             e.SetObserved();
+        };
+
+        try
+        {
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            LogCrash("App.InitializeComponent", ex);
+            throw;
+        }
+
+        UnhandledException += (sender, e) =>
+        {
+            LogCrash("App.UnhandledException", e.Exception);
+            // Mark handled if possible so Windows doesn't immediately fail-fast if recoverable
+            e.Handled = true;
         };
     }
 

@@ -46,13 +46,12 @@ public class MsToTimecodeConverter : IValueConverter
 
 public class RecordingButtonColorConverter : IValueConverter
 {
-    private static readonly SolidColorBrush RecordingBrush = new(Color.FromArgb(255, 255, 51, 75)); // Crimson #FF334B
-    private static readonly SolidColorBrush IdleBrush = new(Color.FromArgb(255, 33, 36, 44));        // Slate #21242C
-
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         bool isRecording = value is bool b && b;
-        return isRecording ? RecordingBrush : IdleBrush;
+        return isRecording
+            ? new SolidColorBrush(Color.FromArgb(255, 255, 51, 75))  // Crimson #FF334B
+            : new SolidColorBrush(Color.FromArgb(255, 33, 36, 44));   // Slate #21242C
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language) => throw new NotImplementedException();
@@ -71,13 +70,12 @@ public class RecordingIconConverter : IValueConverter
 
 public class Tab0BrushConverter : IValueConverter
 {
-    private static readonly SolidColorBrush ActiveBrush = new(Color.FromArgb(255, 79, 128, 255)); // Studio Accent
-    private static readonly SolidColorBrush InactiveBrush = new(Color.FromArgb(255, 22, 24, 29)); // Container
-
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         int idx = value is int i ? i : 0;
-        return idx == 0 ? ActiveBrush : InactiveBrush;
+        return idx == 0
+            ? new SolidColorBrush(Color.FromArgb(255, 79, 128, 255)) // Studio Accent
+            : new SolidColorBrush(Color.FromArgb(255, 22, 24, 29));   // Container
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language) => throw new NotImplementedException();
@@ -85,13 +83,12 @@ public class Tab0BrushConverter : IValueConverter
 
 public class Tab1BrushConverter : IValueConverter
 {
-    private static readonly SolidColorBrush ActiveBrush = new(Color.FromArgb(255, 79, 128, 255)); // Studio Accent
-    private static readonly SolidColorBrush InactiveBrush = new(Color.FromArgb(255, 22, 24, 29)); // Container
-
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         int idx = value is int i ? i : 0;
-        return idx == 1 ? ActiveBrush : InactiveBrush;
+        return idx == 1
+            ? new SolidColorBrush(Color.FromArgb(255, 79, 128, 255)) // Studio Accent
+            : new SolidColorBrush(Color.FromArgb(255, 22, 24, 29));   // Container
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language) => throw new NotImplementedException();
