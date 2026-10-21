@@ -33,14 +33,14 @@ public class Mp4ExportMuxer
             if (!string.IsNullOrEmpty(backingWavPath) && File.Exists(backingWavPath))
             {
                 var backingReader = new AudioFileReader(backingWavPath);
-                mixer.AddMixerInput(backingReader);
+                mixer.AddMixerInput((ISampleProvider)backingReader);
             }
 
             // 2. Original Vocal track for dialogue spans without active user takes
             if (!string.IsNullOrEmpty(originalVocalsWavPath) && File.Exists(originalVocalsWavPath))
             {
                 var vocalReader = new AudioFileReader(originalVocalsWavPath);
-                mixer.AddMixerInput(vocalReader);
+                mixer.AddMixerInput((ISampleProvider)vocalReader);
             }
 
             // 3. User Recorded Takes

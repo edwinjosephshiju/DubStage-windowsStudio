@@ -55,7 +55,7 @@ public class PcmSoftwareMixerEngine : IDisposable
                 {
                     backingReader.CurrentTime = TimeSpan.FromMilliseconds(startPositionMs);
                     backingReader.Volume = (float)Math.Pow(10, backingGainDb / 20.0);
-                    _mixer.AddMixerInput(backingReader);
+                    _mixer.AddMixerInput((ISampleProvider)backingReader);
                 }
             }
 
@@ -71,7 +71,7 @@ public class PcmSoftwareMixerEngine : IDisposable
                 {
                     vocalReader.CurrentTime = TimeSpan.FromMilliseconds(startPositionMs);
                     // In FullDubMix, if a user take is active, duck or mute original vocals during that take span
-                    _mixer.AddMixerInput(vocalReader);
+                    _mixer.AddMixerInput((ISampleProvider)vocalReader);
                 }
             }
 
@@ -100,7 +100,7 @@ public class PcmSoftwareMixerEngine : IDisposable
                         if (offsetFromStart > 0)
                         {
                             takeReader.CurrentTime = TimeSpan.FromMilliseconds(offsetFromStart);
-                            _mixer.AddMixerInput(takeReader);
+                            _mixer.AddMixerInput((ISampleProvider)takeReader);
                         }
                         else
                         {
