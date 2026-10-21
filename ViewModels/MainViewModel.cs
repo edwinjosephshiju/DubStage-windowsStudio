@@ -151,7 +151,37 @@ public class MainViewModel : INotifyPropertyChanged
                     _activeClip.ActiveTakeId = value.Id;
                     _ = _repository.UpdateClipAsync(_activeClip);
                 }
+                UpdateTakePeaks(value);
             }
+        }
+    }
+
+    private void UpdateTakePeaks(TakeEntity? take)
+    {
+        if (take != null && !string.IsNullOrEmpty(take.AudioFilePath) && File.Exists(take.AudioFilePath))
+        {
+            try
+            {
+                using var reader = new NAudio.Wave.AudioFileReader(take.AudioFilePath);
+                var samples = new List<float>();
+                var buf = new float[2048];
+                int read;
+                while ((read = reader.Read(buf, 0, buf.Length)) > 0)
+                {
+                    for (int i = 0; i < read; i++) samples.Add(buf[i]);
+                }
+                var left = samples.Where((x, idx) => idx % 2 == 0).ToArray();
+                var right = samples.Where((x, idx) => idx % 2 != 0).ToArray();
+                ActiveTakePeaks = DemucsOnnxSeparationEngine.ComputePeaks(left, right, 400);
+            }
+            catch
+            {
+                ActiveTakePeaks = Array.Empty<float>();
+            }
+        }
+        else
+        {
+            ActiveTakePeaks = Array.Empty<float>();
         }
     }
 
@@ -326,6 +356,13 @@ public class MainViewModel : INotifyPropertyChanged
     {
         get => _backingPeaks;
         set => SetProperty(ref _backingPeaks, value);
+    }
+
+    private float[] _activeTakePeaks = Array.Empty<float>();
+    public float[] ActiveTakePeaks
+    {
+        get => _activeTakePeaks;
+        set => SetProperty(ref _activeTakePeaks, value);
     }
 
     private string _statusMessage = "Ready";
