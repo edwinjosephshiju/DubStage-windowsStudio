@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap rescap">
+
+  <Identity
+    Name="DubStageStudio"
+    Publisher="CN=DubStageStudioDev"
+    Version="1.0.0.0"
+    ProcessorArchitecture="x64" />
+
+  <Properties>
+    <DisplayName>DubStage - AI Audio Dubbing &amp; ADR Studio</DisplayName>
+    <PublisherDisplayName>DubStage Studio</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+    <Description>Professional AI-Powered Video Dubbing, Stem Separation, and Automated Dialogue Recording (ADR) Studio for Windows.</Description>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" />
+    <PackageDependency Name="Microsoft.WindowsAppRuntime.1.6" MinVersion="6000.311.13.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametarget$"
+      EntryPoint="$targetentrypoint$">
+      <uap:VisualElements
+        DisplayName="DubStage"
+        Description="Professional AI-Powered Video Dubbing, Stem Separation, and Automated Dialogue Recording (ADR) Studio for Windows"
+        BackgroundColor="#0D0E11"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile
+          Wide310x150Logo="Assets\Wide310x150Logo.png"
+          Square71x71Logo="Assets\Square44x44Logo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo" />
+            <uap:ShowOn Tile="wide310x150Logo" />
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#0D0E11" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <!-- Desktop full trust capability required for low-latency native audio and ONNX inference -->
+    <rescap:Capability Name="runFullTrust" />
+    <!-- Hardware microphone access for vocal ADR capture -->
+    <DeviceCapability Name="microphone" />
+    <!-- Internet access for downloading neural ONNX separation models -->
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

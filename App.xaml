@@ -1,0 +1,26 @@
+<Application
+    x:Class="DubStage.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:DubStage.Converters">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="Styles/StudioTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <converters:PlayPauseIconConverter x:Key="PlayPauseIconConverter"/>
+            <converters:ClipCountConverter x:Key="ClipCountConverter"/>
+            <converters:MsToTimecodeConverter x:Key="MsToTimecodeConverter"/>
+            <converters:RecordingButtonColorConverter x:Key="RecordingButtonColorConverter"/>
+            <converters:RecordingIconConverter x:Key="RecordingIconConverter"/>
+            <converters:Tab0BrushConverter x:Key="Tab0BrushConverter"/>
+            <converters:Tab1BrushConverter x:Key="Tab1BrushConverter"/>
+            <converters:Tab0VisibilityConverter x:Key="Tab0VisibilityConverter"/>
+            <converters:Tab1VisibilityConverter x:Key="Tab1VisibilityConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

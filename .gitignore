@@ -1,0 +1,12 @@
+[Bb]in/
+[Oo]bj/
+[Aa]pp[Pp]ackages/
+[Bb]undle[Aa]rtifacts/
+.vs/
+*.user
+*.suo
+*.pfx
+*.cer
+*.db-shm
+*.db-wal
+*.download
