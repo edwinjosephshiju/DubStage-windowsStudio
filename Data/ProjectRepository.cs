@@ -9,11 +9,23 @@ public class ProjectRepository
 
     public ProjectRepository()
     {
-        _baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DubStageStudio");
+        _baseDir = ResolveBaseDirectory();
         Directory.CreateDirectory(_baseDir);
 
         var dbPath = Path.Combine(_baseDir, "dubstage_v1.db");
         _database = new DubStageDatabase(dbPath);
+    }
+
+    private static string ResolveBaseDirectory()
+    {
+        try
+        {
+            return Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+        }
+        catch
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DubStageStudio");
+        }
     }
 
     public async Task InitializeAsync()

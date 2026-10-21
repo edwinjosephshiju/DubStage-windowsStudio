@@ -68,6 +68,7 @@ jobs:
             /p:AppxPackageDir="./AppPackages/" `
             /p:AppxBundle=Never `
             /p:WindowsAppSDKSelfContained=true `
+            /p:SelfContained=true `
             /v:minimal
 
       - name: Verify Package & Generate SHA256 Checksums

@@ -83,10 +83,10 @@
         <!-- MAIN WORKBENCH VIEWPORT -->
         <Grid Grid.Row="1">
             <!-- View 0: DubForge -->
-            <views:DubForgeView DataContext="{x:Bind ViewModel}" Visibility="{x:Bind ViewModel.SelectedTabIndex, Mode=OneWay, Converter={StaticResource Tab0VisibilityConverter}}"/>
+            <views:DubForgeView ViewModel="{x:Bind ViewModel, Mode=OneWay}" DataContext="{x:Bind ViewModel}" Visibility="{x:Bind ViewModel.SelectedTabIndex, Mode=OneWay, Converter={StaticResource Tab0VisibilityConverter}}"/>
 
             <!-- View 1: DubStage -->
-            <views:DubStageView DataContext="{x:Bind ViewModel}" Visibility="{x:Bind ViewModel.SelectedTabIndex, Mode=OneWay, Converter={StaticResource Tab1VisibilityConverter}}"/>
+            <views:DubStageView ViewModel="{x:Bind ViewModel, Mode=OneWay}" DataContext="{x:Bind ViewModel}" Visibility="{x:Bind ViewModel.SelectedTabIndex, Mode=OneWay, Converter={StaticResource Tab1VisibilityConverter}}"/>
         </Grid>
 
         <!-- STATUS BAR & AUDIO ENGINE STATS -->

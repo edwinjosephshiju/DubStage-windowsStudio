@@ -9,32 +9,41 @@ namespace DubStage.Views;
 
 public sealed partial class DubForgeView : UserControl
 {
-    public MainViewModel ViewModel => (MainViewModel)DataContext;
+    public static readonly DependencyProperty ViewModelProperty =
+        DependencyProperty.Register(nameof(ViewModel), typeof(MainViewModel), typeof(DubForgeView),
+            new PropertyMetadata(null, (d, e) => ((DubForgeView)d).OnViewModelChanged((MainViewModel?)e.NewValue)));
+
+    public MainViewModel? ViewModel
+    {
+        get => (MainViewModel?)GetValue(ViewModelProperty);
+        set => SetValue(ViewModelProperty, value);
+    }
+
     public IReadOnlyList<DemucsModelPreset> AvailablePresets => DemucsModelPreset.All;
 
     public DubForgeView()
     {
         InitializeComponent();
-        DataContextChanged += OnDataContextChanged;
     }
 
-    private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+    private void OnViewModelChanged(MainViewModel? newVm)
     {
-        if (ViewModel != null)
+        if (newVm != null)
         {
-            ViewModel.PropertyChanged += (s, e) =>
+            newVm.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(MainViewModel.ActiveProject))
                 {
                     UpdateVideoSource();
                 }
             };
+            UpdateVideoSource();
         }
     }
 
     private void UpdateVideoSource()
     {
-        if (ViewModel.ActiveProject != null && !string.IsNullOrEmpty(ViewModel.ActiveProject.VideoPath) && File.Exists(ViewModel.ActiveProject.VideoPath))
+        if (ViewModel?.ActiveProject != null && !string.IsNullOrEmpty(ViewModel.ActiveProject.VideoPath) && File.Exists(ViewModel.ActiveProject.VideoPath))
         {
             try
             {
@@ -47,11 +56,15 @@ public sealed partial class DubForgeView : UserControl
 
     private async void OnDownloadModelClick(object sender, RoutedEventArgs e)
     {
-        await ViewModel.DownloadModelAsync();
+        if (ViewModel != null)
+        {
+            await ViewModel.DownloadModelAsync();
+        }
     }
 
     private async void OnSideloadModelClick(object sender, RoutedEventArgs e)
     {
+        if (ViewModel == null) return;
         var picker = new FileOpenPicker();
         picker.FileTypeFilter.Add(".onnx");
 
@@ -67,21 +80,33 @@ public sealed partial class DubForgeView : UserControl
 
     private async void OnExtractAudioClick(object sender, RoutedEventArgs e)
     {
-        await ViewModel.ExtractAudioAsync();
+        if (ViewModel != null)
+        {
+            await ViewModel.ExtractAudioAsync();
+        }
     }
 
     private async void OnSeparateStemsClick(object sender, RoutedEventArgs e)
     {
-        await ViewModel.SeparateStemsAsync();
+        if (ViewModel != null)
+        {
+            await ViewModel.SeparateStemsAsync();
+        }
     }
 
     private async void OnDetectDialogueClick(object sender, RoutedEventArgs e)
     {
-        await ViewModel.DetectDialogueClipsAsync();
+        if (ViewModel != null)
+        {
+            await ViewModel.DetectDialogueClipsAsync();
+        }
     }
 
     private void OnSwitchToStageClick(object sender, RoutedEventArgs e)
     {
-        ViewModel.SelectedTabIndex = 1; // Switch to DubStage tab
+        if (ViewModel != null)
+        {
+            ViewModel.SelectedTabIndex = 1;
+        }
     }
 }

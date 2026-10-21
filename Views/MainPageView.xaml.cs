@@ -12,9 +12,19 @@ public sealed partial class MainPageView : UserControl
 
     public MainPageView()
     {
-        InitializeComponent();
         ViewModel = new MainViewModel();
-        _ = ViewModel.InitializeAsync();
+        InitializeComponent();
+        Loaded += async (s, e) =>
+        {
+            try
+            {
+                await ViewModel.InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                App.LogCrash("ViewModel.InitializeAsync", ex);
+            }
+        };
     }
 
     #region Tab Navigation
