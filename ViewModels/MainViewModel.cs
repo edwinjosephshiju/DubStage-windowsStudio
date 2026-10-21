@@ -120,6 +120,8 @@ public class MainViewModel : INotifyPropertyChanged
 
     public bool HasProject => _activeProject != null;
     public string ProjectTitle => _activeProject?.Title ?? "No Project Open";
+    public double VideoDurationMsDouble => _activeProject?.VideoDurationMsDouble ?? 1000.0;
+    public long ProjectDurationMs => _activeProject?.VideoDurationMs ?? 1000L;
 
     public ObservableCollection<ClipEntity> Clips { get; } = new();
 
@@ -131,10 +133,19 @@ public class MainViewModel : INotifyPropertyChanged
         {
             if (SetProperty(ref _activeClip, value))
             {
+                OnPropertyChanged(nameof(ActiveClipIndexText));
+                OnPropertyChanged(nameof(ActiveClipSpeakerText));
+                OnPropertyChanged(nameof(ActiveClipDurationMs));
+                OnPropertyChanged(nameof(ActiveClipScriptText));
                 _ = LoadTakesForClipAsync(value);
             }
         }
     }
+
+    public string ActiveClipIndexText => _activeClip != null ? _activeClip.ClipIndex.ToString() : "-";
+    public string ActiveClipSpeakerText => _activeClip?.SpeakerName ?? "No Speaker";
+    public long ActiveClipDurationMs => _activeClip?.DurationMs ?? 0L;
+    public string ActiveClipScriptText => _activeClip?.ScriptText ?? "No clip selected. Select a cue or detect dialogue in DubForge.";
 
     public ObservableCollection<TakeEntity> Takes { get; } = new();
 
@@ -152,9 +163,50 @@ public class MainViewModel : INotifyPropertyChanged
                     _ = _repository.UpdateClipAsync(_activeClip);
                 }
                 UpdateTakePeaks(value);
+                OnPropertyChanged(nameof(ActiveTakeGainDbDouble));
+                OnPropertyChanged(nameof(ActiveTakeGainDbText));
+                OnPropertyChanged(nameof(ActiveTakeTimeOffsetMsDouble));
+                OnPropertyChanged(nameof(ActiveTakeTimeOffsetMsText));
+                OnPropertyChanged(nameof(HasActiveTake));
             }
         }
     }
+
+    public bool HasActiveTake => _activeTake != null;
+
+    public double ActiveTakeGainDbDouble
+    {
+        get => _activeTake?.GainDbDouble ?? 0.0;
+        set
+        {
+            if (_activeTake != null)
+            {
+                _activeTake.GainDbDouble = value;
+                OnPropertyChanged(nameof(ActiveTakeGainDbDouble));
+                OnPropertyChanged(nameof(ActiveTakeGainDbText));
+                _ = _repository.UpdateTakeAsync(_activeTake);
+            }
+        }
+    }
+
+    public string ActiveTakeGainDbText => _activeTake != null ? $"{_activeTake.GainDb:F1} dB" : "0.0 dB";
+
+    public double ActiveTakeTimeOffsetMsDouble
+    {
+        get => _activeTake?.TimeOffsetMsDouble ?? 0.0;
+        set
+        {
+            if (_activeTake != null)
+            {
+                _activeTake.TimeOffsetMsDouble = value;
+                OnPropertyChanged(nameof(ActiveTakeTimeOffsetMsDouble));
+                OnPropertyChanged(nameof(ActiveTakeTimeOffsetMsText));
+                _ = _repository.UpdateTakeAsync(_activeTake);
+            }
+        }
+    }
+
+    public string ActiveTakeTimeOffsetMsText => _activeTake != null ? $"{_activeTake.TimeOffsetMs} ms" : "0 ms";
 
     private void UpdateTakePeaks(TakeEntity? take)
     {

@@ -31,14 +31,14 @@
                 <StackPanel Grid.Column="0" Spacing="6" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Border Background="#4F80FF" CornerRadius="4" Padding="8,2">
-                            <TextBlock Text="{x:Bind ViewModel.ActiveClip.ClipIndex, Mode=OneWay, FallbackValue=1}" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                            <TextBlock Text="{x:Bind ViewModel.ActiveClipIndexText, Mode=OneWay}" FontSize="12" FontWeight="Bold" Foreground="White"/>
                         </Border>
-                        <TextBlock Text="{x:Bind ViewModel.ActiveClip.SpeakerName, Mode=OneWay, FallbackValue='Speaker 1'}" FontSize="14" FontWeight="Bold" Foreground="#00E5A3"/>
-                        <TextBlock Text="{x:Bind ViewModel.ActiveClip.DurationMs, Mode=OneWay, Converter={StaticResource MsToTimecodeConverter}, FallbackValue='00:00.0'}" FontSize="12" Foreground="#9AA0A6" VerticalAlignment="Center" FontFamily="Consolas"/>
+                        <TextBlock Text="{x:Bind ViewModel.ActiveClipSpeakerText, Mode=OneWay}" FontSize="14" FontWeight="Bold" Foreground="#00E5A3"/>
+                        <TextBlock Text="{x:Bind ViewModel.ActiveClipDurationMs, Mode=OneWay, Converter={StaticResource MsToTimecodeConverter}}" FontSize="12" Foreground="#9AA0A6" VerticalAlignment="Center" FontFamily="Consolas"/>
                     </StackPanel>
 
                     <!-- Large readable script text for voice actor -->
-                    <TextBlock Text="{x:Bind ViewModel.ActiveClip.ScriptText, Mode=OneWay, FallbackValue='No clip selected. Select a cue or detect dialogue in DubForge.'}" FontSize="20" FontWeight="SemiBold" Foreground="#F0F2F5" TextWrapping="Wrap"/>
+                    <TextBlock Text="{x:Bind ViewModel.ActiveClipScriptText, Mode=OneWay}" FontSize="20" FontWeight="SemiBold" Foreground="#F0F2F5" TextWrapping="Wrap"/>
                 </StackPanel>
 
                 <!-- Live VU Meter -->
@@ -70,7 +70,7 @@
         </Border>
 
         <!-- ROW 2: DUAL WAVEFORM SYNC DECK -->
-        <components:DualWaveformControl x:Name="WaveformControl" Grid.Row="1" VocalPeaks="{x:Bind ViewModel.VocalPeaks, Mode=OneWay}" TakePeaks="{x:Bind ViewModel.ActiveTakePeaks, Mode=OneWay}" PlayheadMs="{x:Bind ViewModel.PlayheadMs, Mode=OneWay}" DurationMs="{x:Bind ViewModel.ActiveProject.VideoDurationMs, Mode=OneWay, FallbackValue=1000}" SeekRequested="OnWaveformSeekRequested"/>
+        <components:DualWaveformControl x:Name="WaveformControl" Grid.Row="1" VocalPeaks="{x:Bind ViewModel.VocalPeaks, Mode=OneWay}" TakePeaks="{x:Bind ViewModel.ActiveTakePeaks, Mode=OneWay}" PlayheadMs="{x:Bind ViewModel.PlayheadMs, Mode=OneWay}" DurationMs="{x:Bind ViewModel.ProjectDurationMs, Mode=OneWay}" SeekRequested="OnWaveformSeekRequested"/>
 
         <!-- ROW 3: TAKES CAROUSEL & AUDITION DECK -->
         <Border Grid.Row="2" Background="#16181D" BorderBrush="#2D313A" BorderThickness="1" CornerRadius="8" Padding="14">
@@ -123,11 +123,11 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="60"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Take Gain:" FontSize="11" Foreground="#9AA0A6" VerticalAlignment="Center"/>
-                        <Slider Grid.Column="1" Minimum="-12" Maximum="12" StepFrequency="0.5" Value="{x:Bind ViewModel.ActiveTake.GainDbDouble, Mode=TwoWay, FallbackValue=0}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.ActiveTake.GainDb, Mode=OneWay, FallbackValue=0}" FontSize="11" Foreground="#00E5A3" VerticalAlignment="Center" FontFamily="Consolas"/>
+                        <Slider Grid.Column="1" Minimum="-12" Maximum="12" StepFrequency="0.5" Value="{x:Bind ViewModel.ActiveTakeGainDbDouble, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.HasActiveTake, Mode=OneWay}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.ActiveTakeGainDbText, Mode=OneWay}" FontSize="11" Foreground="#00E5A3" VerticalAlignment="Center" FontFamily="Consolas"/>
                     </Grid>
 
                     <!-- Time Offset Nudge Slider -->
@@ -135,11 +135,11 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="60"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Nudge (Sync):" FontSize="11" Foreground="#9AA0A6" VerticalAlignment="Center"/>
-                        <Slider Grid.Column="1" Minimum="-500" Maximum="500" StepFrequency="10" Value="{x:Bind ViewModel.ActiveTake.TimeOffsetMsDouble, Mode=TwoWay, FallbackValue=0}" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.ActiveTake.TimeOffsetMs, Mode=OneWay, FallbackValue=0}" FontSize="11" Foreground="#4F80FF" VerticalAlignment="Center" FontFamily="Consolas"/>
+                        <Slider Grid.Column="1" Minimum="-500" Maximum="500" StepFrequency="10" Value="{x:Bind ViewModel.ActiveTakeTimeOffsetMsDouble, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.HasActiveTake, Mode=OneWay}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.ActiveTakeTimeOffsetMsText, Mode=OneWay}" FontSize="11" Foreground="#4F80FF" VerticalAlignment="Center" FontFamily="Consolas"/>
                     </Grid>
 
                     <!-- Audition Mode Selection -->

@@ -39,7 +39,7 @@
                                 <FontIcon Glyph="{x:Bind ViewModel.IsPlaying, Mode=OneWay, Converter={StaticResource PlayPauseIconConverter}}" FontSize="14" Foreground="#F0F2F5"/>
                             </Button>
 
-                            <Slider Grid.Column="1" Minimum="0" Maximum="{x:Bind ViewModel.ActiveProject.VideoDurationMsDouble, Mode=OneWay, FallbackValue=1000}" Value="{x:Bind ViewModel.PlayheadMsDouble, Mode=TwoWay}" VerticalAlignment="Center"/>
+                            <Slider Grid.Column="1" Minimum="0" Maximum="{x:Bind ViewModel.VideoDurationMsDouble, Mode=OneWay}" Value="{x:Bind ViewModel.PlayheadMsDouble, Mode=TwoWay}" VerticalAlignment="Center"/>
 
                             <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.TimecodeDisplay, Mode=OneWay}" VerticalAlignment="Center" FontFamily="Consolas" FontSize="13" Foreground="#00E5A3"/>
                         </Grid>

@@ -32,7 +32,13 @@ public sealed partial class VuMeterControl : UserControl
 
     private void UpdateLevels()
     {
-        LeftProgressBar.Value = Math.Clamp(LeftLevelDb, -60, 0);
-        RightProgressBar.Value = Math.Clamp(RightLevelDb, -60, 0);
+        if (LeftProgressBar != null)
+        {
+            LeftProgressBar.Value = Math.Clamp(LeftLevelDb, -60, 0);
+        }
+        if (RightProgressBar != null)
+        {
+            RightProgressBar.Value = Math.Clamp(RightLevelDb, -60, 0);
+        }
     }
 }

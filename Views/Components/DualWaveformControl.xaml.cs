@@ -68,8 +68,9 @@ public sealed partial class DualWaveformControl : UserControl
         UpdatePlayhead();
     }
 
-    private void DrawCanvasWaveform(Canvas canvas, float[] peaks, Color color, ref Line? playhead)
+    private void DrawCanvasWaveform(Canvas? canvas, float[]? peaks, Color color, ref Line? playhead)
     {
+        if (canvas == null) return;
         canvas.Children.Clear();
         double w = canvas.ActualWidth;
         double h = canvas.ActualHeight;
@@ -132,6 +133,7 @@ public sealed partial class DualWaveformControl : UserControl
 
     private void UpdatePlayhead()
     {
+        if (VocalWaveformCanvas == null) return;
         double w = VocalWaveformCanvas.ActualWidth;
         if (w <= 0 || DurationMs <= 0) return;
 
