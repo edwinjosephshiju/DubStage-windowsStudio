@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build & Package MSIX
+    name: Build & Package PyQt6 MSIX
     runs-on: windows-latest
 
     steps:
@@ -18,13 +18,57 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up .NET 8 SDK
-        uses: actions/setup-dotnet@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
         with:
-          dotnet-version: '8.0.x'
+          python-version: '3.11'
+          cache: 'pip'
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+      - name: Install Python Dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Download Standalone FFmpeg Binaries
+        shell: pwsh
+        run: |
+          Write-Host "Downloading static FFmpeg release for Windows..."
+          $ffmpegZip = "ffmpeg.zip"
+          Invoke-WebRequest -Uri "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip" -OutFile $ffmpegZip
+          Expand-Archive -Path $ffmpegZip -DestinationPath "ffmpeg_extracted"
+          Copy-Item -Path (Get-ChildItem -Path "ffmpeg_extracted" -Filter "ffmpeg.exe" -Recurse).FullName -Destination "."
+          Copy-Item -Path (Get-ChildItem -Path "ffmpeg_extracted" -Filter "ffprobe.exe" -Recurse).FullName -Destination "."
+          Remove-Item -Recurse -Force $ffmpegZip, "ffmpeg_extracted"
+          Write-Host "FFmpeg binary bundled successfully."
+
+      - name: Compile Standalone Windows Application with PyInstaller
+        shell: pwsh
+        run: |
+          Write-Host "Running PyInstaller build..."
+          pyinstaller --noconfirm DubStage.spec
+
+          if (-not (Test-Path "dist/DubStage/DubStage.exe")) {
+            Write-Error "PyInstaller build failed to produce dist/DubStage/DubStage.exe"
+            exit 1
+          }
+          Write-Host "PyInstaller standalone build succeeded."
+
+      - name: Prepare MSIX Packaging Layout
+        shell: pwsh
+        run: |
+          $layoutDir = "./msix_layout"
+          if (Test-Path $layoutDir) { Remove-Item -Recurse -Force $layoutDir }
+          New-Item -ItemType Directory -Path $layoutDir -Force
+
+          Write-Host "Copying PyInstaller binaries into MSIX layout..."
+          Copy-Item -Path "./dist/DubStage/*" -Destination $layoutDir -Recurse -Force
+
+          Write-Host "Copying Assets and AppxManifest into layout..."
+          Copy-Item -Path "./Assets" -Destination "$layoutDir/Assets" -Recurse -Force
+          Copy-Item -Path "./Package.appxmanifest" -Destination "$layoutDir/AppxManifest.xml" -Force
+
+          Get-ChildItem -Path $layoutDir | Select-Object Name, Length
 
       - name: Generate Code Signing Certificate (Store Dev / Sideloading)
         shell: pwsh
@@ -42,56 +86,56 @@ jobs:
           Export-PfxCertificate -Cert $cert -FilePath "DubStageTestCert.pfx" -Password $pwd
           Export-Certificate -Cert $cert -FilePath "DubStageTestCert.cer"
 
-          # Import into LocalMachine Root & TrustedPeople for build runner trust
+          # Import into LocalMachine Root & TrustedPeople on the build runner
           Import-Certificate -FilePath "DubStageTestCert.cer" -CertStoreLocation "Cert:\LocalMachine\Root"
           Import-Certificate -FilePath "DubStageTestCert.cer" -CertStoreLocation "Cert:\LocalMachine\TrustedPeople"
-          
-          # Pass thumbprint to environment for MSBuild signing
-          "CERT_THUMBPRINT=$($cert.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Append
-          Write-Host "Certificate generated with Thumbprint: $($cert.Thumbprint)"
+          Write-Host "Certificate generated and trusted on runner."
 
-      - name: Restore NuGet Dependencies
+      - name: Package and Sign Windows MSIX via Windows SDK
         shell: pwsh
         run: |
-          dotnet restore DubStage.csproj -r win-x64
+          $sdkTools = Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits\10\bin\*\x64\makeappx.exe" | Sort-Object FullName -Descending | Select-Object -First 1
+          if (-not $sdkTools) {
+            Write-Error "Windows SDK makeappx.exe not found on runner!"
+            exit 1
+          }
+          $sdkBin = $sdkTools.DirectoryName
+          Write-Host "Using Windows SDK tools at: $sdkBin"
 
-      - name: Build and Package MSIX
-        shell: pwsh
-        run: |
-          msbuild DubStage.csproj `
-            /p:Configuration=Release `
-            /p:Platform=x64 `
-            /p:RuntimeIdentifier=win-x64 `
-            /p:GenerateAppxPackageOnBuild=true `
-            /p:AppxPackageSigningEnabled=true `
-            /p:PackageCertificateThumbprint="${{ env.CERT_THUMBPRINT }}" `
-            /p:AppxPackageDir="./AppPackages/" `
-            /p:AppxBundle=Never `
-            /p:WindowsAppSDKSelfContained=true `
-            /p:SelfContained=true `
-            /v:minimal
+          $makeappx = Join-Path $sdkBin "makeappx.exe"
+          $signtool = Join-Path $sdkBin "signtool.exe"
+
+          New-Item -ItemType Directory -Path "./AppPackages" -Force
+          $msixOutput = "./AppPackages/DubStage_1.0.4.0_x64.msix"
+
+          Write-Host "Packing MSIX..."
+          & $makeappx pack /d "./msix_layout" /p $msixOutput /nv
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          Write-Host "Signing MSIX with test developer certificate..."
+          & $signtool sign /fd SHA256 /a /f DubStageTestCert.pfx /p "DubStage123!" $msixOutput
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          Write-Host "MSIX packaged and signed successfully at $msixOutput"
 
       - name: Verify Package & Generate SHA256 Checksums
         shell: pwsh
         run: |
           Write-Host "Scanning generated packages..."
-          Get-ChildItem -Path ./AppPackages/ -Recurse
-
           $msixFiles = Get-ChildItem -Path ./AppPackages/ -Filter "*.msix" -Recurse
           if ($msixFiles.Count -eq 0) {
             Write-Error "No .msix package was generated!"
             exit 1
           }
 
-          Write-Host "Found MSIX: $($msixFiles[0].FullName)"
-          $hash = (Get-FileHash -Path $msixFiles[0].FullName -Algorithm SHA256).Hash
+          $msixFile = $msixFiles[0]
+          Write-Host "Found MSIX: $($msixFile.FullName) ($($msixFile.Length) bytes)"
+          $hash = (Get-FileHash -Path $msixFile.FullName -Algorithm SHA256).Hash
           Write-Host "SHA-256 Checksum: $hash"
-          "$hash  $($msixFiles[0].Name)" | Out-File -FilePath "./AppPackages/SHA256SUMS.txt" -Encoding utf8
+          "$hash  $($msixFile.Name)" | Out-File -FilePath "./AppPackages/SHA256SUMS.txt" -Encoding utf8
+
           Copy-Item -Path "DubStageTestCert.cer" -Destination "./AppPackages/"
-          $installScript = Get-ChildItem -Path ./AppPackages/ -Filter "Install.ps1" -Recurse | Select-Object -First 1
-          if ($installScript) {
-            Copy-Item -Path $installScript.FullName -Destination "./AppPackages/Install.ps1"
-          }
+          Copy-Item -Path "Install.ps1" -Destination "./AppPackages/"
 
       - name: Upload MSIX Workflow Artifact
         uses: actions/upload-artifact@v4

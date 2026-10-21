@@ -1,13 +1,57 @@
-[Bb]in/
-[Oo]bj/
-[Aa]pp[Pp]ackages/
-[Bb]undle[Aa]rtifacts/
-.vs/
-*.user
-*.suo
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+.venv
+venv/
+ENV/
+
+# PyInstaller / Build outputs
+*.manifest
+*.spec.bak
+msix_layout/
+AppPackages/
+TestArtifact*/
+ffmpeg_extracted/
+ffmpeg.zip
+ffmpeg.exe
+ffprobe.exe
+
+# Certificates & Secrets
 *.pfx
 *.cer
-*.db-shm
-*.db-wal
-*.download
-TestArtifact*/
+
+# Runtime AppData caches
+*.pcm
+*.wav
+*.mp4
+dubstage.db
+dubstage.db-wal
+dubstage.db-shm
+crash.log
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user

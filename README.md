@@ -1,107 +1,126 @@
-# DubStage Windows Studio
+# 🎙️ DubStage Windows Studio: On-Device Video Dubbing & Demucs v4 Neural Stem Separation DAW
 
 [![Build & Package Windows MSIX](https://github.com/edwinjosephshiju/DubStage-windowsStudio/actions/workflows/build.yml/badge.svg)](https://github.com/edwinjosephshiju/DubStage-windowsStudio/actions/workflows/build.yml)
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%2F%2011%20(x64)-0078D6?logo=windows&logoColor=white)](https://microsoft.com/windows)
+[![UI Framework](https://img.shields.io/badge/UI-PyQt6%20(Qt%206)-41CD52?logo=qt&logoColor=white)](https://riverbankcomputing.com/software/pyqt/)
+[![Package Format](https://img.shields.io/badge/Package-MSIX%20(Desktop%20Bridge)-00A4EF?logo=microsoft)](https://learn.microsoft.com/en-us/windows/msix/)
+[![Neural Engine](https://img.shields.io/badge/Neural%20Engine-Demucs%20v4%20(HTDemucs)-FF6F00?logo=onnx&logoColor=white)](https://huggingface.co/StemSplitio/htdemucs-ft-vocals-onnx)
+[![Hardware Acceleration](https://img.shields.io/badge/Acceleration-DirectX%2012%20DirectML%20%2F%20CPU-8B5CF6)](#hardware-acceleration)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-**DubStage Windows Studio** is a professional, high-performance desktop application for **AI-powered Video Dubbing, Demucs Neural Stem Separation, and Automated Dialogue Recording (ADR)** built with **WinUI 3** and the **Windows App SDK (.NET 8)**.
+---
 
-Converted and enhanced from the original [DubStage Android Studio](https://github.com/edwinjosephshiju/DubStage-androidStudio) codebase, this Windows edition introduces desktop-grade digital audio workstation (DAW) workflows, low-latency WASAPI audio capture, real-time dual-waveform sync visualizers, comprehensive keyboard shortcuts, and responsive viewport scaling.
+## 🌟 Overview
+
+**DubStage Windows Studio** is a unified on-device **Video Dubbing, Neural Stem Separation, and Automated Dialogue Recording (ADR) Digital Audio Workstation (DAW)** engineered specifically for modern Windows 10 & 11 PCs using **PyQt6**.
+
+It brings the complete architectural capabilities of the DubStage Android studio to the desktop, optimized for desktop workflows with full keyboard navigation, high-DPI Per-Monitor V2 scaling, low-latency audio capture, and MSIX packaging for direct Microsoft Store submission.
 
 ---
 
 ## 🚀 Key Features
 
-* **WinUI 3 & Windows App SDK (.NET 8):** Native modern Windows user interface adhering to Windows 11 Fluent Design with Mica/Acrylic backdrops and dark studio DAW aesthetics.
-* **Demucs v4 Neural Stem Separation:** High-fidelity vocal and instrumental backing separation via ONNX Runtime with residual phase preservation and peak waveform calculation.
-* **Acoustic Voice Activity Detection (VAD):** Automatic speech segmentation, energy RMS profiling, pitch autocorrelation, and speaker turn detection.
-* **Low-Latency ADR Recording Booth:** Real-time microphone capture at 44.1 kHz 16-bit stereo with live VU meter (RMS & peak levels) and tally lamp visual indicator.
-* **Dual-Waveform Sync Visualizer:** Side-by-side comparative waveform rendering (original vocal reference vs active voiceover take) with real-time scrub line and cue markers.
-* **Takes Carousel & Micro-Sync Deck:** Fine-tune user takes with per-take gain sliders (-12 dB to +12 dB) and sub-second time-offset nudge sliders (-500 ms to +500 ms) for lip-sync precision.
-* **Multi-Track Audition Modes:** Switch between Full Dubbed Mix, Mute Original Vocals (Karaoke Mode), and Solo Active Take.
-* **Master MP4 & Subtitle Export:** Export finished dubbed video along with synchronized `.srt` and `.vtt` subtitle files.
-* **Microsoft Store Packaging (`.msix`):** Fully compliant `Package.appxmanifest` configured for Microsoft Store submission and side-by-side sideloading.
+* **Demucs v4 Neural Stem Separation**: Meta's state-of-the-art Hybrid Transformer Demucs model running locally via ONNX Runtime with FP16 weights.
+* **Phase-Perfect Residual Subtraction**: Subtracts isolated vocals directly from the original PCM to produce pristine, artifact-free instrumental backing with zero digital noise.
+* **Acoustic Voice Activity Detection (VAD)**: Adaptive noise-floor profiling, dual-threshold hysteresis, acoustic pitch ($F_0$) autocorrelation, and speaker turn segmentation.
+* **Multi-Take ADR Dubbing Booth**: 3-second pre-roll visual countdown, real-time animated VU meter (-60 dB to 0 dB), take auditioning, slip offset alignment, and take gain control.
+* **Studio Audition Modes**:
+  1. *Full Dub Mix*: Backing + user recorded takes (with original reference vocals filling in for unrecorded dialogue lines).
+  2. *Original + Residual*: Reference vocal stem + synchronized instrumental backing.
+  3. *Recorded + Residual*: Active recorded actor take + synchronized instrumental backing.
+  4. *Solo Original Vocals*: Reference vocal stem only.
+  5. *Solo Active Take*: Currently highlighted user take only.
+  6. *Backing Only*: Clean instrumental backing without any vocal cues (karaoke).
+* **Dual-Waveform Synchronizer**: Interactive canvas showing reference vocal stem against recorded actor take with dialogue cue boundary overlays and scrub playhead.
+* **Master MP4 & Subtitle Export**: High-performance multi-track master render muxing video with dubbed audio via bundled FFmpeg, accompanied by frame-accurate `.srt` and `.vtt` subtitle files.
+* **Microsoft Store MSIX Packaging**: Packaged into Windows Desktop Bridge `.msix` with complete AppxManifest capabilities (`runFullTrust`, `microphone`, `internetClient`) and all visual asset variants to pass Store review.
+* **100% On-Device & Private**: Zero cloud dependencies, zero telemetry, zero data exfiltration.
 
 ---
 
 ## ⌨️ Desktop Keyboard Shortcuts
 
-Designed for keyboard-driven studio efficiency:
+DubStage Windows Studio is built for professional desktop DAW workflows with comprehensive keyboard control:
 
 | Shortcut | Action | Description |
 | :--- | :--- | :--- |
-| <kbd>Space</kbd> | **Play / Pause** | Toggles multi-track studio audio & video playback |
-| <kbd>R</kbd> | **Record / Stop Take** | Starts or stops voiceover recording for selected cue |
-| <kbd>↑</kbd> | **Previous Dialogue Cue** | Moves selection to the preceding dialogue span |
-| <kbd>↓</kbd> | **Next Dialogue Cue** | Advances selection to the next dialogue span |
-| <kbd>←</kbd> | **Scrub Backward** | Rewinds playhead by 1 second |
-| <kbd>→</kbd> | **Scrub Forward** | Advances playhead by 1 second |
-| <kbd>Ctrl</kbd> + <kbd>O</kbd> | **Open Video** | Launches file picker to import MP4, MKV, MOV, or AVI |
-| <kbd>Ctrl</kbd> + <kbd>S</kbd> | **Save Project** | Persists project state and script changes to SQLite |
-| <kbd>Ctrl</kbd> + <kbd>E</kbd> | **Export Master** | Renders dubbed master MP4 and subtitles |
-| <kbd>Ctrl</kbd> + <kbd>M</kbd> | **Mute Vocals Toggle** | Toggles between Full Dub Mix and Karaoke Mode |
-| <kbd>Delete</kbd> | **Delete Take** | Removes currently selected voiceover take |
-| <kbd>1</kbd> | **DubForge View** | Switches to video monitor, model cards, and dialogue editor |
-| <kbd>2</kbd> | **DubStage View** | Switches to recording booth and audition deck |
+| **`Space`** | **Toggle Play / Pause** | Play or pause at current playhead position |
+| **`R`** | **Record / Stop Take** | Initiate 3s countdown & record take in active cue |
+| **`S`** | **Slice Cue at Playhead** | Split active dialogue cue into two sequence-indexed cues |
+| **`Left` / `Right`** | **Nudge 1s** | Step playhead backward or forward by 1 second |
+| **`Shift+Left` / `Shift+Right`** | **Nudge 5s** | Step playhead backward or forward by 5 seconds |
+| **`Up` / `Down`** or **`[` / `]`** | **Navigate Cues** | Select previous or next dialogue cue |
+| **`1` – `6`** | **Audition Modes** | Switch between Full Dub Mix, Stems, Solo, and Backing |
+| **`Ctrl+O`** | **Import Video** | Open file dialog to ingest video file |
+| **`Ctrl+D`** | **Stem Separation** | Run Demucs v4 neural stem separation |
+| **`Ctrl+Shift+V`** | **Auto-VAD Detection** | Detect dialogue cues automatically |
+| **`Ctrl+E`** | **Export Master MP4** | Render master dubbed video & subtitles |
+| **`Ctrl+M`** | **Studio Settings** | Configure model preset, backend, and preferences |
+| **`Delete`** | **Delete Active Take** | Remove currently selected actor take |
+| **`F11`** | **Toggle Fullscreen** | Borderless fullscreen DAW interface |
+| **`F1`** | **Shortcuts Cheatsheet** | Display interactive shortcuts reference modal |
+| **`Esc`** | **Cancel / Stop** | Stop playback, cancel recording, or dismiss modal |
 
 ---
 
-## 🖥️ Display & Viewport Scaling
+## 🖥️ Display & Viewport Scaling (High-DPI)
 
-DubStage is optimized for high-DPI Windows displays:
-* **Per-Monitor V2 DPI Awareness:** Automatically scales crystal-clear typography, vector icons, and waveforms from 100% to 250% scaling without blurriness.
-* **Adaptive DAW Grid:**
-  * **Compact Laptops (1366x768 / 1080p):** Responsive scrolling workbench with stacked monitors.
-  * **Widescreen Displays (1440p / 4K / 21:9):** Wide side-by-side split view with expanded waveform timeline and full script prompter.
+DubStage supports dynamic Windows display scaling (100%, 125%, 150%, 175%, and 200% DPI):
+* Embedded `app.manifest` configuring `<dpiAwareness>PerMonitorV2, PerMonitor</dpiAwareness>`.
+* Qt High-DPI PassThrough scale factor policy eliminating blurriness on Windows laptops.
+* Geometry clamped to the desktop work area to ensure the window never overflows or cuts off buttons on smaller 1080p laptop displays.
 
 ---
 
-## 🛠️ Automated GitHub Actions CI/CD Pipeline
+## 🛠️ GitHub Actions Automated Build & MSIX Packaging
 
-DubStage compiles and packages `.msix` bundles directly in GitHub Actions using `.github/workflows/build.yml`.
+All compiling, PyInstaller standalone bundling, FFmpeg packaging, and Windows SDK MSIX signing run entirely in the cloud via GitHub Actions in [`.github/workflows/build.yml`](.github/workflows/build.yml). **Your local machine remains completely clean of heavy IDEs.**
 
-### Testing Workflow Artifacts
-To fetch the latest MSIX build artifact without installing local IDE tooling:
+### Workflow Pipeline Steps:
+1. **Runner**: Windows Server (`windows-latest`).
+2. **Environment**: Python 3.11 with dependencies cached.
+3. **FFmpeg Bundling**: Downloads standalone official Windows binaries (`ffmpeg.exe`, `ffprobe.exe`).
+4. **PyInstaller Compilation**: Bundles Python runtime, PyQt6, ONNX Runtime, and FFmpeg into a standalone directory (`dist/DubStage/`).
+5. **Layout Structuring**: Prepares `msix_layout/` containing `AppxManifest.xml`, `Assets/`, and application binaries.
+6. **Code Signing**: Generates self-signed developer certificate matching `Publisher="CN=DubStageStudioDev"`.
+7. **MSIX Packaging**: Uses Windows SDK `makeappx.exe` and `signtool.exe` to package and sign `DubStage_1.0.4.0_x64.msix`.
+8. **Artifact Upload**: Publishes `DubStage-Windows-MSIX` containing `.msix`, `Install.ps1`, `DubStageTestCert.cer`, and `SHA256SUMS.txt`.
+
+### Pulling and Testing the MSIX on Local PC:
+You can pull the latest workflow artifact directly via GitHub CLI (`gh`):
 ```powershell
-# Check latest workflow run status
-gh run list --workflow="build.yml"
+# List latest workflow runs
+gh run list --workflow="build.yml" --limit 5
 
-# Inspect failed run logs if needed
-gh run view $(gh run list --workflow="build.yml" --status=failure --limit 1 --json databaseId -q ".[0].databaseId") --log-failed
+# View run logs if needed
+gh run view <run-id> --log-failed
 
-# Download completed MSIX artifact to test locally
-gh run download --name DubStage-Windows-MSIX
+# Download the MSIX artifact package
+gh run download -n DubStage-Windows-MSIX -D ./TestArtifact
+
+# Run the automated installer (elevates to install test certificate and MSIX)
+cd ./TestArtifact
+powershell -ExecutionPolicy Bypass -File .\Install.ps1
 ```
-
-### Sideloading the MSIX
-1. Extract the downloaded `DubStage-Windows-MSIX` archive.
-2. Double-click `DubStageTestCert.cer` and install to **Local Machine -> Trusted People** (one-time setup for self-signed test builds).
-3. Double-click `DubStageStudio_1.0.0.0_x64.msix` to install.
 
 ---
 
-## 📦 Project Structure
+## 🏬 Microsoft Store Submission Guide
 
-```
-DubStage-windowsStudio/
-├── .github/workflows/build.yml    # GitHub Actions CI/CD building Windows MSIX
-├── Assets/                        # Windows Store high-DPI logos & splash screen
-├── Converters/                    # XAML data-binding converters
-├── Data/                          # SQLite database & project repository
-├── Engine/                        # Demucs ONNX, VAD, WASAPI Recording, Mixer & Muxer
-├── Models/                        # Project, Clip, Take, and Model preset entities
-├── Styles/                        # StudioTheme dark DAW palette and styles
-├── ViewModels/                    # MainViewModel state machine & RelayCommands
-├── Views/
-│   ├── Components/                # DualWaveformControl & VuMeterControl
-│   ├── DubForgeView.xaml          # Video monitor, Demucs manager & dialogue table
-│   └── DubStageView.xaml          # Teleprompter booth, dual waveform & audition deck
-├── app.manifest                   # PerMonitorV2 DPI awareness & Windows 10/11 manifest
-├── DubStage.csproj                # WinUI 3 .NET 8 MSIX project configuration
-├── MainWindow.xaml                # Desktop window shell with keyboard accelerators
-└── Package.appxmanifest           # Microsoft Store submission manifest
-```
+To submit DubStage to the Microsoft Partner Center:
+1. In `Package.appxmanifest`, update `<Identity>` with your Publisher ID and Package Name from Partner Center:
+   ```xml
+   <Identity
+     Name="YourCompany.DubStage"
+     Publisher="CN=YOUR-PUBLISHER-ID-HERE"
+     Version="1.0.4.0"
+     ProcessorArchitecture="x64" />
+   ```
+2. Build via the GitHub Actions workflow.
+3. Submit the resulting `.msix` package in Partner Center under **Packages**. Microsoft will automatically sign the package with Microsoft's trusted root certificate for global distribution.
 
 ---
 
 ## 📜 License
 
-Distributed under the Apache License 2.0.
+Distributed under the Apache License 2.0. See [LICENSE](LICENSE) for details.

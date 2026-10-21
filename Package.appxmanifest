@@ -8,7 +8,7 @@
   <Identity
     Name="DubStageStudio"
     Publisher="CN=DubStageStudioDev"
-    Version="1.0.3.0"
+    Version="1.0.4.0"
     ProcessorArchitecture="x64" />
 
   <Properties>
@@ -50,7 +50,7 @@
   </Applications>
 
   <Capabilities>
-    <!-- Internet access for downloading neural ONNX separation models -->
+    <!-- Internet access for downloading neural ONNX separation models from Hugging Face -->
     <Capability Name="internetClient" />
     <!-- Desktop full trust capability required for low-latency native audio and ONNX inference -->
     <rescap:Capability Name="runFullTrust" />
