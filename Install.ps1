@@ -45,13 +45,24 @@ if ($msixFile) {
     Write-Host "[2/2] Installing DubStage MSIX Package: $($msixFile.Name)..." -ForegroundColor Yellow
     try {
         Add-AppxPackage -Path $msixFile.FullName -ErrorAction Stop
-        Write-Host "      ✓ DubStage successfully installed to Windows!" -ForegroundColor Green
-        Write-Host ""
-        Write-Host "You can now launch 'DubStage' from the Windows Start Menu." -ForegroundColor Cyan
+
+        # Verify package registration in Windows
+        $pkg = Get-AppxPackage -Name "DubStageStudio"
+        if ($pkg) {
+            Write-Host "      ✓ DubStage successfully registered and installed to Windows!" -ForegroundColor Green
+            Write-Host "      Package Full Name: $($pkg.PackageFullName)" -ForegroundColor DarkGray
+            Write-Host ""
+            Write-Host "You can now launch 'DubStage' from the Windows Start Menu." -ForegroundColor Cyan
+        } else {
+            Write-Warning "Add-AppxPackage command completed, but Get-AppxPackage did not find 'DubStageStudio'. Please check Windows Event Viewer (AppXDeployment-Server)."
+        }
     } catch {
-        Write-Error "Failed to install MSIX package: $_"
+        Write-Host "      ✗ Installation Failed!" -ForegroundColor Red
+        Write-Host "Error Details: $($_.Exception.Message)" -ForegroundColor Red
         Write-Host ""
-        Write-Host "Tip: Ensure Developer Mode is enabled under Windows Settings > System > For Developers." -ForegroundColor Yellow
+        Write-Host "Troubleshooting:" -ForegroundColor Yellow
+        Write-Host "1. Ensure Developer Mode is enabled under Windows Settings > System > For Developers." -ForegroundColor Yellow
+        Write-Host "2. Ensure the self-signed certificate was trusted in Trusted People store." -ForegroundColor Yellow
     }
 } else {
     Write-Error "No .msix package found in directory: $scriptDir"

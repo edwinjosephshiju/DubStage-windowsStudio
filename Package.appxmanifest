@@ -8,7 +8,7 @@
   <Identity
     Name="DubStageStudio"
     Publisher="CN=DubStageStudioDev"
-    Version="1.0.4.0"
+    Version="1.0.5.0"
     ProcessorArchitecture="x64" />
 
   <Properties>
@@ -23,7 +23,7 @@
   </Dependencies>
 
   <Resources>
-    <Resource Language="x-generate" />
+    <Resource Language="en-US" />
   </Resources>
 
   <Applications>

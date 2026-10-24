@@ -9,7 +9,7 @@ from pathlib import Path
 # Application Metadata
 APP_NAME = "DubStage"
 APP_DISPLAY_NAME = "DubStage - AI Audio Dubbing & ADR Studio"
-APP_VERSION = "1.0.4.0"
+APP_VERSION = "1.0.5.0"
 APP_PUBLISHER = "CN=DubStageStudioDev"
 APP_DESCRIPTION = "Professional On-Device Video Dubbing, Neural Stem Separation, and ADR Studio for Windows"
 
